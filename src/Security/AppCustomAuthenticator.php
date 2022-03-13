@@ -28,6 +28,8 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
         $this->urlGenerator = $urlGenerator;
     }
 
+
+
     public function authenticate(Request $request): Passport
     {
         $email = $request->request->get('email', '');
@@ -58,4 +60,6 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
+
+
 }
