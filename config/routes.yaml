@@ -2,5 +2,5 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 connect_discord_check:
-   path: /oauth/check/discord
-   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  path: /connect/discord/check
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController

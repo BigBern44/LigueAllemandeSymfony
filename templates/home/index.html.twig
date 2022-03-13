@@ -12,6 +12,10 @@
    <h1> Accueil </h1>
       {% if app.user %}
          <a href="{{ path('app_logout') }}"> <h1> Deconnexion </h1> </a>
+
+          <h2>Bienvenue {{ app.user.username }}</h2>
+
+         <img src="https://cdn.discordapp.com/avatars/{{ app.user.discordId }}/{{ app.user.avatar }}.png" />
       {% else %}
 
       <a href="{{ path('app_login') }}"> <h1> Connexion </h1> </a>

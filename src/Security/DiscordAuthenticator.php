@@ -2,56 +2,104 @@
 
 namespace App\Security;
 
-use http\Client;
+use App\Entity\User; // your user entity
+use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
+use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
-class DiscordAuthenticator extends SocialAuthenticator
+class DiscordAuthenticator extends OAuth2Authenticator
 {
-    private RouterInterface $router;
-    private ClientRegistry $clientRegistry;
+    private $clientRegistry;
+    private $entityManager;
+    private $router;
 
-    public function __construct(RouterInterface $router, ClientRegistry $clientRegistry ){
-
-
-        $this->router = $router;
+    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $entityManager, RouterInterface $router)
+    {
         $this->clientRegistry = $clientRegistry;
-    }
-    public function start(Request $request, AuthenticationException $authException = null)
-    {
-        return new RedirectResponse($this->router->generate('app-login'));
+        $this->entityManager = $entityManager;
+        $this->router = $router;
     }
 
-    public function supports(Request $request)
+    public function supports(Request $request): ?bool
     {
-        return 'connect_discord_check' === $request->attributes->get('_route');
+        // continue ONLY if the current ROUTE matches the check ROUTE
+        return $request->attributes->get('_route') === 'connect_discord_check';
     }
 
-    public function getCredentials(Request $request)
+    public function authenticate(Request $request): Passport
     {
-        return $this->fetchAccessToken($this->clientRegistry->getClient('discord'));
+        $client = $this->clientRegistry->getClient('discord');
+        $accessToken = $this->fetchAccessToken($client);
+
+        return new SelfValidatingPassport(
+            new UserBadge($accessToken->getToken(), function() use ($accessToken, $client) {
+
+                $discordUser = $client->fetchUserFromToken($accessToken);
+
+                $email = $discordUser->getEmail();
+
+                // 1) have they logged in with Facebook before? Easy!
+                $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(['discordId' => $discordUser->getId()]);
+
+                if ($existingUser) {
+                    return $existingUser;
+                }
+                $alreadyRegistered = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $discordUser->getEmail()]);
+
+                if (!$alreadyRegistered){
+
+                    $user = new User();
+                    $user->setEmail($discordUser->getEmail());
+                    $user->setPassword('Connexion par discord');
+                }else{
+                    $user = $alreadyRegistered;
+                }
+
+                // 2) do we have a matching user by email?
+
+
+
+                // 3) Maybe you just want to "register" them by creating
+
+
+                $user->setUsername($discordUser->getUsername());
+                $user->setAvatar($discordUser->getAvatarHash());
+                $user->setDiscordId($discordUser->getId());
+
+                $this->entityManager->persist($user);
+                $this->entityManager->flush();
+
+                return $user;
+            })
+        );
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        dd($this->getCredentials());
+        // change "app_homepage" to some route in your app
+        $targetUrl = $this->router->generate('app_home');
+
+        return new RedirectResponse($targetUrl);
+
+        // or, on success, let the request continue to be handled by the controller
+        //return null;
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        // TODO: Implement onAuthenticationFailure() method.
+        $message = strtr($exception->getMessageKey(), $exception->getMessageData());
+
+        return new Response($message, Response::HTTP_FORBIDDEN);
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
-    {
-        // TODO: Implement onAuthenticationSuccess() method.
-    }
+
 }
