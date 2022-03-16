@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ligue index{% endblock %}
+
+{% block content %}
+    <div class="ligueIndex">
+    <h1>Ligues des Gamers</h1>
+        <a href="{{ path('app_ligue_new') }}">Create new</a>
+
+        <div class="listeLigue">
+
+                {% for ligue in ligues %}
+                <a href="/ligues/{{ ligue.id }}"><div class="cardLigue">
+
+
+                       {{ ligue.Name }}
+
+
+
+
+                    </div></a>
+                {% else %}
+
+                        colspan="4">no records found
+
+                {% endfor %}
+
+        </div>
+
+
+    </div>
+{% endblock %}

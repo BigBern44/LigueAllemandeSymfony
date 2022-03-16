@@ -1,0 +1,74 @@
+body {
+    background-color: lightgray;
+}
+
+a {
+    color: #000;
+    text-decoration: none;
+    font-size: 18px;
+}
+.navbar{
+    width: 100%;
+    height: 150px;
+    background-color: antiquewhite;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid black;
+
+}
+.ligueIndex{
+    width: 75%;
+    height: 800px;
+    background-color: antiquewhite;
+    margin: auto;
+    margin-top: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.listeLigue{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+    width: 80%;
+    height: 500px;
+    margin-top: 10px;
+    border: 1px solid black;
+
+
+}
+.cardLigue{
+    width: 50vw;
+    height: 100px;
+    border: 1px solid black;
+    margin: 10px;
+    transition-duration: 0.5s;
+}
+.cardLigue:hover{
+    transform: scale(1.05);
+    transition-duration: 0.5s;
+
+}
+
+.InterfaceUtil{
+    width: 10%;
+    background-color: white;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    align-items: center;
+
+
+
+
+}
+.imgDiscord{
+    width: 75px;
+    height: 75px;
+    border-radius: 90%;
+
+
+}

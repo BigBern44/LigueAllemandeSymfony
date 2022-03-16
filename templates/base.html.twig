@@ -3,10 +3,11 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
+
         {% endblock %}
 
         {% block javascripts %}
@@ -14,9 +15,38 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}
+        {% block nav %}
+            <nav class="navbar">
+                <a href="{{ path('app_home')  }}"><h1> Accueil </h1> </a>
+                <a href="{{ path('app_ligue_index')  }}"><h1> Ligues </h1> </a>
+                <h1> Joueurs </h1>
+                <h1> Planning </h1>
+                <h1> Classement </h1>
 
 
+                {% if app.user %}
+                    <div class="InterfaceUtil">
+                        <a href="{{ path('app_logout') }}"> <h1> Deconnexion </h1> </a>
+
+
+
+                        <img class="imgDiscord"src="https://cdn.discordapp.com/avatars/{{ app.user.discordId }}/{{ app.user.avatar }}.png" />
+                    </div>
+
+                {% else %}
+                    <div class="InterfaceUtil">
+                        <a href="{{ path('app_login') }}"> <h1> Connexion </h1> </a>
+
+
+
+                        <a href="{{ path('app_register') }}"> <h1> Inscription </h1> </a>
+                    </div>
+                {% endif %}
+
+            </nav>
+            {% block content %}
+
+            {% endblock %}
 
 
         {% endblock %}
