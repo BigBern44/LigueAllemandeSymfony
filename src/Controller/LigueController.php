@@ -74,4 +74,14 @@ class LigueController extends AbstractController
 
         return $this->redirectToRoute('app_ligue_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/addUser', name: 'app_ligue_add_user', methods: ['POST'])]
+    public function addUser(Request $request, Ligue $ligue, LigueRepository $ligueRepository): Response
+    {
+
+
+        return $this->redirectToRoute('app_ligue_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
 }

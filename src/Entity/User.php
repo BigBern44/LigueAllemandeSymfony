@@ -55,20 +55,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $discordId;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Ligue::class, mappedBy="User")
-     */
-    private $ligues;
 
     /**
      * @ORM\OneToMany(targetEntity=Fight::class, mappedBy="User", orphanRemoval=true)
      */
     private $fights;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=LigueStat::class, inversedBy="User")
+     */
+    private $ligueStat;
+
+    /**
+     * @ORM\OneToMany(targetEntity=LigueStat::class, mappedBy="User")
+     */
+    private $ligueStats;
+
     public function __construct()
     {
         $this->ligues = new ArrayCollection();
         $this->fights = new ArrayCollection();
+        $this->ligueStats = new ArrayCollection();
     }
 
 
@@ -193,32 +200,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Ligue>
-     */
-    public function getLigues(): Collection
-    {
-        return $this->ligues;
-    }
 
-    public function addLigue(Ligue $ligue): self
-    {
-        if (!$this->ligues->contains($ligue)) {
-            $this->ligues[] = $ligue;
-            $ligue->addUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLigue(Ligue $ligue): self
-    {
-        if ($this->ligues->removeElement($ligue)) {
-            $ligue->removeUser($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Fight>
@@ -244,6 +226,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($fight->getUser() === $this) {
                 $fight->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getLigueStat(): ?LigueStat
+    {
+        return $this->ligueStat;
+    }
+
+    public function setLigueStat(?LigueStat $ligueStat): self
+    {
+        $this->ligueStat = $ligueStat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LigueStat>
+     */
+    public function getLigueStats(): Collection
+    {
+        return $this->ligueStats;
+    }
+
+    public function addLigueStat(LigueStat $ligueStat): self
+    {
+        if (!$this->ligueStats->contains($ligueStat)) {
+            $this->ligueStats[] = $ligueStat;
+            $ligueStat->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLigueStat(LigueStat $ligueStat): self
+    {
+        if ($this->ligueStats->removeElement($ligueStat)) {
+            // set the owning side to null (unless already changed)
+            if ($ligueStat->getUser() === $this) {
+                $ligueStat->setUser(null);
             }
         }
 

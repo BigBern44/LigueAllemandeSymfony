@@ -29,21 +29,23 @@ class Ligue
      */
     private $Created_at;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="ligues")
-     */
-    private $User;
 
     /**
      * @ORM\OneToMany(targetEntity=Fight::class, mappedBy="Ligue", orphanRemoval=true)
      */
     private $fights;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LigueStat::class, mappedBy="Ligue")
+     */
+    private $ligueStats;
+
 
     public function __construct()
     {
         $this->User = new ArrayCollection();
         $this->fights = new ArrayCollection();
+        $this->ligueStats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -75,29 +77,7 @@ class Ligue
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUser(): Collection
-    {
-        return $this->User;
-    }
 
-    public function addUser(User $user): self
-    {
-        if (!$this->User->contains($user)) {
-            $this->User[] = $user;
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        $this->User->removeElement($user);
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Fight>
@@ -123,6 +103,36 @@ class Ligue
             // set the owning side to null (unless already changed)
             if ($fight->getLigue() === $this) {
                 $fight->setLigue(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LigueStat>
+     */
+    public function getLigueStats(): Collection
+    {
+        return $this->ligueStats;
+    }
+
+    public function addLigueStat(LigueStat $ligueStat): self
+    {
+        if (!$this->ligueStats->contains($ligueStat)) {
+            $this->ligueStats[] = $ligueStat;
+            $ligueStat->setLigue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLigueStat(LigueStat $ligueStat): self
+    {
+        if ($this->ligueStats->removeElement($ligueStat)) {
+            // set the owning side to null (unless already changed)
+            if ($ligueStat->getLigue() === $this) {
+                $ligueStat->setLigue(null);
             }
         }
 
