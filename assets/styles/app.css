@@ -9,8 +9,12 @@ a {
 }
 .navbar{
     width: 100%;
-    height: 150px;
-    background-color: antiquewhite;
+    height: 50px;
+    background-color: rgba(0,0,0,0.25);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -18,6 +22,7 @@ a {
     border: 1px solid black;
 
 }
+/*
 .ligueIndex{
     width: 75%;
     height: 800px;
@@ -28,6 +33,7 @@ a {
     flex-direction: column;
     align-items: center;
 }
+
 .listeLigue{
     display: flex;
     flex-direction: column;
@@ -37,9 +43,8 @@ a {
     height: 500px;
     margin-top: 10px;
     border: 1px solid black;
-
-
 }
+
 .cardLigue{
     width: 50vw;
     height: 100px;
@@ -47,6 +52,7 @@ a {
     margin: 10px;
     transition-duration: 0.5s;
 }
+
 .cardLigue:hover{
     transform: scale(1.05);
     transition-duration: 0.5s;
@@ -60,15 +66,12 @@ a {
     flex-direction: column-reverse;
     justify-content: space-between;
     align-items: center;
-
-
-
-
 }
+
 .imgDiscord{
     width: 75px;
     height: 75px;
     border-radius: 90%;
-
-
 }
+
+ */

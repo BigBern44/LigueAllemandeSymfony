@@ -18,9 +18,7 @@ class OauthController extends AbstractController
     public function connectByDiscord(ClientRegistry $clientRegistry):RedirectResponse
     {
 
-
         $client = $clientRegistry->getClient('discord');
-
 
         return $client->redirect(['identify', 'email']);
 
