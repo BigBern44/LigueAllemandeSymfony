@@ -1,7 +1,8 @@
 body {
-    background-color: #14213d;
+    background-color: rgba(20, 33, 61, 0.5);
     color: white;
     font-family: Arial, Helvetica, sans-serif;
+    background-image: url("../res/bg_lol1.jpg");
 }
 
 .navbar {
@@ -30,7 +31,7 @@ ul {
     justify-content: center;
     list-style: none;
     padding: 0 10px 0 10px;
-    height: 100px;
+    height: 80px;
     width: 100px;
 }
 
@@ -79,4 +80,9 @@ ul {
 .btnRegister:hover {
     color: #eeeeee;
     background-color: rgba(255, 255, 255, 0.2);
+}
+
+a {
+    color: white;
+    text-decoration: none;
 }

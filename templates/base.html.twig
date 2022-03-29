@@ -24,20 +24,21 @@
                     <li class="navbar--item">Planning</li>
                     <li class="navbar--item">Classement</li>
                 </ul>
-                <div class="btns">
+
                 {% if app.user %}
+                <div class="btns">
                     <div class="InterfaceUtil">
                         <a href="{{ path('app_logout') }}"> <div class="btnRegister"> Deconnexion </div> </a>
                         <img class="imgDiscord"src="https://cdn.discordapp.com/avatars/{{ app.user.discordId }}/{{ app.user.avatar }}.png" />
                     </div>
-
+                </div>
                 {% else %}
-                    <div class="InterfaceUtil">
+
+                    <div class="btns">
                         <a href="{{ path('app_login') }}"> <div class="btnLogin"> Connexion </div> </a>
                         <a href="{{ path('app_register') }}"><div class="btnRegister"> Inscription </div> </a>
                     </div>
                 {% endif %}
-                </div>
             </nav>
             {% block content %}
 
