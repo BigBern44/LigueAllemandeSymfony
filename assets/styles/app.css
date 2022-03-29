@@ -1,8 +1,8 @@
 body {
-    background-color: rgba(20, 33, 61, 0.5);
     color: white;
     font-family: Arial, Helvetica, sans-serif;
-    background-image: url("../res/bg_lol1.jpg");
+    background-image: url("../res/bg_lol2.jpg");
+    background-size: cover;
 }
 
 .navbar {
@@ -16,7 +16,7 @@ body {
     justify-content: space-around;
     align-items: center;
     height: 80px;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.75);
 }
 
 ul {
@@ -58,28 +58,32 @@ ul {
     width: 150px;
     height: 40px;
     margin: 20px;
-    border-radius: 50px;
+    border-radius: 15px;
 }
 
 .btnLogin {
     line-height: 40px;
     background-color: #fca311;
+    transition: 0.2s ease-in;
 }
 
 .btnLogin:hover {
-    background-color: #e48f05;
-    color: #eeeeee;
+    background-color: white;
+    color: black;
+    transition: 0.2s ease-in;
 }
 
 .btnRegister {
     box-sizing: border-box;
     border: 2px solid white;
     line-height: 35px;
+    transition: 0.2s ease-in;
 }
 
 .btnRegister:hover {
-    color: #eeeeee;
-    background-color: rgba(255, 255, 255, 0.2);
+    color: black;
+    background-color: white;
+    transition: 0.2s ease-in;
 }
 
 a {
