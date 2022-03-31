@@ -10,6 +10,7 @@
         <div class="listeLigue">
 
                 {% for ligue in ligues %}
+
                 <a href="/ligues/{{ ligue.id }}"><div class="cardLigue">
 
 
@@ -21,7 +22,7 @@
                     </div></a>
                 {% else %}
 
-                        colspan="4">no records found
+                        no records found
 
                 {% endfor %}
 

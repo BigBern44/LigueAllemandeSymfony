@@ -61,10 +61,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $fights;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=LigueStat::class, inversedBy="User")
-     */
-    private $ligueStat;
 
     /**
      * @ORM\OneToMany(targetEntity=LigueStat::class, mappedBy="User")
@@ -232,17 +228,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getLigueStat(): ?LigueStat
-    {
-        return $this->ligueStat;
-    }
 
-    public function setLigueStat(?LigueStat $ligueStat): self
-    {
-        $this->ligueStat = $ligueStat;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, LigueStat>

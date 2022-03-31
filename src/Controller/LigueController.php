@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Ligue;
+use App\Entity\LigueStat;
 use App\Form\LigueType;
 use App\Repository\LigueRepository;
+use App\Repository\LigueStatRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,10 +43,14 @@ class LigueController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_ligue_show', methods: ['GET'])]
-    public function show(Ligue $ligue): Response
+    public function show(Ligue $ligue, LigueStatRepository $ligueStatRepository): Response
     {
+
+        $ligueUser = $ligueStatRepository->findBy(array('Ligue' => $ligue));
+
         return $this->render('ligue/show.html.twig', [
             'ligue' => $ligue,
+            'users' => $ligueUser,
         ]);
     }
 
@@ -75,12 +81,25 @@ class LigueController extends AbstractController
         return $this->redirectToRoute('app_ligue_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/addUser', name: 'app_ligue_add_user', methods: ['POST'])]
-    public function addUser(Request $request, Ligue $ligue, LigueRepository $ligueRepository): Response
+    #[Route('/addUser/{ligue}', name: 'app_ligue_add_user', methods: ['GET'])]
+    public function addUser(Ligue $ligue, LigueStatRepository $ligueStatRepository): Response
     {
 
+        $user = $this->getUser();
 
-        return $this->redirectToRoute('app_ligue_index', [], Response::HTTP_SEE_OTHER);
+
+        $ligueStat = new LigueStat();
+        $ligueStat->setUser($user);
+        $ligueStat->setLigue($ligue);
+        $ligueStat->setDefaite(0);
+        $ligueStat->setVictoire(0);
+        $ligueStat->setTauxVictoire(0);
+
+        $ligueStatRepository-> add($ligueStat);
+
+        return $this->render('ligue/show.html.twig', [
+            'ligue' => $ligue,
+        ]);
     }
 
 

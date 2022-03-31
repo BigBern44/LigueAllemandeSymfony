@@ -4,11 +4,23 @@
 
 {% block content %}
     <h1>{{ ligue.name }}</h1>
+    {% if app.user %}
+
+        <a href="{{ path('app_ligue_add_user', { 'ligue': ligue.id }) }}">rejoindre ligue</a>
+    {% endif %}
+    <div class="listeLigue">
+    {% for stat in ligue.ligueStats %}
+        <a href=""><div class="cardLigue">
+           <p>  salut {{ stat.user.username }}</p>
 
 
-    <a href="{{ path('app_ligue_index') }}">back to list</a>
+            </div></a>
 
-    <a href="{{ path('app_ligue_edit', {'id': ligue.id}) }}">edit</a>
 
-    {{ include('ligue/_delete_form.html.twig') }}
+
+
+
+    {% endfor %}
+    </div>
+
 {% endblock %}
